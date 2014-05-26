@@ -1,0 +1,243 @@
+<%@page import="Konten.KontakBean"%>
+<%@page import="java.util.Date"%>
+<%@page import="Konten.MemberBean"%>
+<%@page import="Konten.IklanBean"%>
+<%@page import="Controller.DatabaseInfo"%>
+<!DOCTYPE html>
+<% try {
+    
+%>
+<jsp:include page="header.jsp"></jsp:include>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="#linkJualBeli" class="navbar-brand">Jual Beli ala UI</a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="home.jsp">Home</a>
+                    </li>
+                    <li>
+                        <a href="pasangiklan.jsp">Pasang Iklan</a>
+                    </li>
+
+
+                <%
+                    String username = "";
+                    HttpSession sesi = request.getSession();
+                    if (sesi == null || sesi.getAttribute("username") == null) {
+                %>
+                <li>
+                    <a href="register.jsp">Daftar</a>
+                </li>
+            </ul>
+
+            <form action="/Jual_Beli_UI/Autentikasi" method="POST" class="navbar-form navbar-right">
+                <input type="text" name="username" class="form-control" placeholder="Masukkan username">   
+                <input type="password" name="password" class="form-control" placeholder="Masukkan password"> 
+                <button type="submit" class="btn btn-primary">Masuk</button>                     
+            </form>
+
+            <%
+            } else {
+                username = sesi.getAttribute("username").toString();
+            %>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="profile.html/#" id="profile"><%= username%><span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="themes">
+                        <li><a href="#">Lihat Profil</a></li>
+                        <li><a href="#">Edit Profil</a></li>
+                        <li><a href="#">Lihat Wishlist</a></li>
+                        <li class="divider"></li>
+                        <li><a href="logout.jsp">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <%
+                }
+            %>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+<div class="container">
+    <div class="bs-component">
+        <ul class="breadcrumb">
+            <li><a href="home.jsp">Home</a></li>
+            <li><a href="#">Kategori</a></li>
+            <li class="active">Nama Barang</li>
+        </ul>
+    </div>
+    <%
+                    DatabaseInfo db = new DatabaseInfo();
+                    int id = Integer.parseInt(request.getParameter("idIklan"));
+                    IklanBean iklan = db.getDetailIklan(id);
+                    DatabaseInfo db2 = new DatabaseInfo();
+                    MemberBean member = db2.getMember(iklan.getPemasang());
+                    DatabaseInfo db3 = new DatabaseInfo();
+                    KontakBean kontak = db3.getKontak(iklan.getPemasang());
+                    Date today = new Date();
+                    
+                    long diff = today.getTime() - iklan.getTanggal().getTime();
+                        long diffDays = diff / (24 * 60 * 60 * 1000);
+                        String waktu = ""; //untuk keterangan waktu di iklan
+                        if (diffDays == 0) {
+                            waktu = "Hari ini";
+                        } else if (diffDays == 1) {
+                            waktu = "Kemarin";
+                        } else if (diffDays > 1) {
+                            waktu = diffDays + " hari yang lalu";
+                        }
+                    %>
+
+                    <h3><%= iklan.getNama() %></h3>
+    <div class="ratings">
+        <p>
+            <span class="glyphicon glyphicon-globe"></span>
+            <span><%= member.getDomisili() %></span>
+            <span class="glyphicon glyphicon-time pull-little-right"></span>
+            <span><%= waktu %></span>
+            <span class="glyphicon glyphicon-user pull-little-right"></span>
+            <span><%= iklan.getJumlahView() %> view</span>
+        </p>
+    </div>
+
+    <!-- Place somewhere in the <body> of your page -->
+    <div class="row">
+        <div class="col-lg-8">
+            <section class="slider">
+                <div id="slider" class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <img src="images/kitchen_adventurer_cheesecake_brownie.jpg" />
+                        </li>
+                        <li>
+                            <img src="images/kitchen_adventurer_lemon.jpg" />
+                        </li>
+                        <li>
+                            <img src="images/kitchen_adventurer_donut.jpg" />
+                        </li>
+                        <li>
+                            <img src="images/kitchen_adventurer_caramel.jpg" />
+                        </li>
+
+                    </ul>
+                </div>
+                <div id="carousel" class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <img src="images/kitchen_adventurer_cheesecake_brownie.jpg" />
+                        </li>
+                        <li>
+                            <img src="images/kitchen_adventurer_lemon.jpg" />
+                        </li>
+                        <li>
+                            <img src="images/kitchen_adventurer_donut.jpg" />
+                        </li>
+                        <li>
+                            <img src="images/kitchen_adventurer_caramel.jpg" />
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="bs-component">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title"><%= iklan.getHarga() %></h2>                
+                        <p>
+                            <span class="glyphicon glyphicon-tag"></span>
+                            <span><%= iklan.getStatus() %></span>
+                        </p>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="http://placehold.it/100x100" alt="">
+                            </div>
+                            <div class="col-md-8">
+                                <h3><%= member.getNama() %></h3>
+                                <p><%= member.getBio() %></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <span class="glyphicon glyphicon-phone"></span>
+                                    <span><%= kontak.getNoHp() %></span>
+                                </li>
+                                <li class="list-group-item">          
+                                    <span class="glyphicon glyphicon-phone"></span>
+                                    <span><%= kontak.getPinBbm() %></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="glyphicon glyphicon-phone"></span>
+                                    <span><%= kontak.getAkunFb() %></span>
+                                </li>
+                            </ul>
+                            <button type="submit" class="btn btn-primary btn-block">Tambahkan ke Wishlist</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<jsp:include page="footer.jsp"></jsp:include>
+
+<script type="text/javascript">
+    $(function() {
+        SyntaxHighlighter.all();
+    });
+    $(window).load(function() {
+        $('#carousel').flexslider({
+            animation: "slide",
+            controlNav: false,
+            animationLoop: false,
+            slideshow: false,
+            itemWidth: 210,
+            itemMargin: 5,
+            asNavFor: '#slider'
+        });
+
+        $('#slider').flexslider({
+            animation: "slide",
+            controlNav: false,
+            animationLoop: false,
+            slideshow: false,
+            sync: "#carousel",
+            start: function(slider) {
+                $('body').removeClass('loading');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+<% } catch (Exception e) {
+    e.printStackTrace();
+}
+%>

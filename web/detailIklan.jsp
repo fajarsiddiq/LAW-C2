@@ -178,7 +178,7 @@
                                     <%
                                 }
                                 //%>
-                                
+                                <button name="voucher" value="1" type="submit" class="btn btn-primary btn-block">Bayar Melalui Voucher</button>
                             </form>
                         </div>
                     </div>

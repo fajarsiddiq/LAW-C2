@@ -162,10 +162,24 @@
                                 <div class="form-group">
                                     <label for="select" class="col-lg-2 control-label">Jurusan</label>
                                     <div class="col-lg-10">
-                                        <select class="form-control" id="select" name="jurusan">
-                                            <option value="Ilmu Komputer">Ilmu Komputer</option>
-                                            <option value="Sistem Informasi">Sistem Informasi</option>
-                                            <option value="Hubungan Internasional">Hubungan Internasional</option>
+                                        <select name="optone" size="1" 
+                                                onchange="setOptions(document.myform.optone.options[document.myform.optone.selectedIndex].value);" class="form-control" id="select">
+                                            <option value="" selected="selected"></option>
+                                            <option value="1">KEDOKTERAN</option>
+                                            <option value="2">KEDOKTERAN GIGI</option>
+                                            <option value="3">MATEMATIKA & ILMU PENGETAHUAN ALAM</option>
+                                            <option value="4">FARMASI</option>
+                                            <option value="5">TEKNIK</option>
+                                            <option value="6">HUKUM</option>
+                                            <option value="7">EKONOMI</option>
+                                            <option value="8">ILMU PENGETAHUAN BUDAYA</option>
+                                            <option value="9">PSIKOLOGI</option>
+                                            <option value="10">KESEHATAN MASYARAKAT</option>
+                                            <option value="11">ILMU KOMPUTER</option>
+                                            <option value="12">ILMU KEPERAWATAN</option>
+                                        </select>
+                                        <select name="opttwo" size="1" class="form-control" id="select">
+                                            <option value="" selected="selected">Silakan pilih fakultas terlebih dahulu.</option>
                                         </select>
                                     </div>
                                 

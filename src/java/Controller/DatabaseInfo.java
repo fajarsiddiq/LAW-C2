@@ -482,4 +482,42 @@ public class DatabaseInfo {
         closeConnection();
         return (idIklan == 0);
     }
+    
+    public AkunBean getAkunBean(String username)
+    {
+        AkunBean hasil = new AkunBean();
+        openConnection();
+        String query = "select * from password where user_ui = '" + username + "'";
+        try {
+            rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                hasil.setPassword(rs.getString("password_baru"));
+                hasil.setUsername(rs.getString("user_ui"));
+            }
+            closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return hasil;
+    }
+    
+    public void updateAkun(String username, AkunBean akun, MemberBean member)
+    {
+        openConnection();
+        System.out.println("ini nih " + username + ", " + akun.getPassword() + ", nama = " + member.getNama());
+        String query = "Update password set "
+                + "password_baru = '" + akun.getPassword() + "'"
+                + " where user_ui = '" + username + "';";
+        String query2 = "Update member set "
+                + "nama = '" + member.getNama() + "'"
+                + " where user_ui = '" + username + "';";
+        try {
+            stmt.executeUpdate(query);
+            stmt.executeUpdate(query2);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+    }
 }

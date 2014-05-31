@@ -63,6 +63,7 @@
         </ul>
     </div>
     <%
+        int batasan = 6;
         if (request.getMethod().equalsIgnoreCase("get")) {
 
             DatabaseInfo db = new DatabaseInfo();

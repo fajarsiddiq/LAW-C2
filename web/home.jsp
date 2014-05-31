@@ -1,66 +1,8 @@
 <!DOCTYPE html>
 <jsp:include page="header.jsp"></jsp:include>
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a href="#linkJualBeli" class="navbar-brand">Jual Beli ala UI</a>
-                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar-main">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="home.jsp">Home</a>
-                    </li>
-                    <li>
-                        <a href="pasangiklan.jsp">Pasang Iklan</a>
-                    </li>
-
-
-                <%
-                    String username = "";
-                    HttpSession sesi = request.getSession();
-                    if (sesi == null || sesi.getAttribute("username") == null) {
-                %>
-                <li>
-                    <a href="register.jsp">Daftar</a>
-                </li>
-            </ul>
-
-            <form action="/Jual_Beli_UI/Autentikasi" method="POST" class="navbar-form navbar-right">
-                <input type="text" name="username" class="form-control" placeholder="Masukkan username">   
-                <input type="password" name="password" class="form-control" placeholder="Masukkan password"> 
-                <button type="submit" class="btn btn-primary">Masuk</button>                     
-            </form>
-
-            <%
-            } else {
-                username = sesi.getAttribute("username").toString();
-            %>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="profile.html/#" id="profile"><%= username%><span class="caret"></span></a>
-                    <ul class="dropdown-menu" aria-labelledby="themes">
-                        <li><a href="#">Lihat Profil</a></li>
-                        <li><a href="#">Edit Profil</a></li>
-                        <li><a href="#">Edit Akun</a></li>
-                        <li><a href="wishlist.jsp">Lihat Wishlist</a></li>
-                        <li class="divider"></li>
-                        <li><a href="logout.jsp">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <%
-                }
-            %>
-        </div>
-    </div>
-</div>
+    <jsp:include page="menu.jsp">
+    <jsp:param name="aktif" value="Home" />
+</jsp:include>
 
 <div class="container">
     <br>
@@ -120,7 +62,7 @@
                     <a href="search.jsp?keyword=&kategori=Elektronik&page=1"><img width="125" height="125" src="images/icons/png/elektronik.png" alt="Elektronik"></a>
                 </div>
                 <div class="col-xs-2 text-center">
-                    <a href="search.jsp?keyword=&kategori=Fashion&page=1"><img width="125" height="125"src="images/icons/png/fashion.png" alt="Fashion"></a>
+                    <a href="search.jsp?keyword=&kategori=Fashion&page=1"><img width="125" height="125" src="images/icons/png/fashion.png" alt="Fashion"></a>
                 </div>
                 <div class="col-xs-2 text-center">
                     <a href="search.jsp?keyword=&kategori=Jasa&page=1"><img width="125" height="125" src="images/icons/png/jasa.png" alt="Jasa"></a>

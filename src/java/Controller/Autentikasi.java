@@ -93,6 +93,7 @@ public class Autentikasi extends HttpServlet {
             HttpSession session = request.getSession();
             String nama = databaseInfo.getUsername(username);
             session.setAttribute("username", nama);
+            session.setAttribute("usernameUI", username);
             response.sendRedirect("home.jsp");
         }
     }

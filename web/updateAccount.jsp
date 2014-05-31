@@ -7,71 +7,64 @@
     try {
 %>
 
-<jsp:include page="menu.jsp">
-    <jsp:param name="aktif" value="" />
-</jsp:include>
+
 <%@page import="edu.yale.its.tp.cas.client.filter.CASFilter"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<jsp:include page="menu.jsp">
+    <jsp:param name="aktif" value="Home" />
+</jsp:include>
 <head>
 <script src="js/jquery.min.js"></script>
 
 </head>
 <jsp:useBean id="databaseInfo" class="Controller.DatabaseInfo"></jsp:useBean>
-<jsp:useBean id="currentMember" class="Konten.MemberBean"></jsp:useBean>
-<jsp:useBean id="currentKontak" class="Konten.KontakBean"></jsp:useBean>
 <jsp:useBean id="currentAkun" class="Konten.AkunBean"></jsp:useBean>
+<jsp:useBean id="currentMember" class="Konten.MemberBean"></jsp:useBean>
+
+<jsp:useBean id="newAkun" class="Konten.AkunBean"></jsp:useBean>
+<jsp:useBean id="newMember" class="Konten.MemberBean"></jsp:useBean>
+<jsp:setProperty name="newAkun" property="password" param="passwordBaru"></jsp:setProperty>
+<jsp:setProperty name="newMember" property="nama" param="nama"></jsp:setProperty>
 
 <%
     String tmpUsername = session.getAttribute("username").toString();
-    String username = databaseInfo.getUsernameUI(tmpUsername);
-
-    String password = databaseInfo.getPassword(username);
-    
-    currentKontak = databaseInfo.getKontak(username);
-
+    String username = session.getAttribute("usernameUI").toString();
     currentMember = databaseInfo.getMember(username);
+    currentAkun = databaseInfo.getAkunBean(username);
+    out.println(currentAkun.getUsername());
+    String password = databaseInfo.getPassword(username);
 
     if (request.getMethod().equalsIgnoreCase("POST")) {
         if (request.getParameter("submit").equalsIgnoreCase("batal")) {
-            //response.sendRedirect("home.jsp");
+            response.sendRedirect("home.jsp");
         } else {
 %>
-
-<jsp:useBean id="memberBean" class="Konten.MemberBean"></jsp:useBean>
-<jsp:useBean id="kontakBean" class="Konten.KontakBean"></jsp:useBean>
-
-
-<jsp:setProperty name="memberBean" property="username" value="<%=username%>"></jsp:setProperty>
-<jsp:setProperty name="kontakBean" property="nama" value="<%=username%>"></jsp:setProperty>
-
-<jsp:setProperty name="memberBean" property="nama" param="nama"></jsp:setProperty>\
-<jsp:setProperty name="memberBean" property="jenisKelamin" param="jenisKelamin"></jsp:setProperty>
-<jsp:setProperty name="memberBean" property="jurusan" param="jurusan"></jsp:setProperty>
-<jsp:setProperty name="memberBean" property="domisili" param="domisili"></jsp:setProperty>
-<jsp:setProperty name="memberBean" property="bio" param="bio"></jsp:setProperty>
-<jsp:setProperty name="memberBean" property="password" param="password"></jsp:setProperty>
-    <!--         hardcode bung-->
-<jsp:setProperty name="memberBean" property="fotoProfil" value="hmm.hmm"></jsp:setProperty>
-
-<jsp:setProperty name="kontakBean" property="noHp" param="noHP"></jsp:setProperty>
-<jsp:setProperty name="kontakBean" property="emailLain" param="email"></jsp:setProperty>
-<jsp:setProperty name="kontakBean" property="akunFb" param="akunFB"></jsp:setProperty>
-<jsp:setProperty name="kontakBean" property="akunTwitter" param="akunTwitter"></jsp:setProperty>
-<jsp:setProperty name="kontakBean" property="pinBbm" param="pinBBM"></jsp:setProperty>
-
 <%
             try {
-                databaseInfo.updateMember(memberBean);
-                databaseInfo.updateKontak(kontakBean);
-                session.setAttribute("username", memberBean.getNama());
-                //response.sendRedirect("home.jsp");
+                String passwordLama = request.getParameter("password");
+                String gantiPassword = request.getParameter("gantiPassword");
+                out.println(password + ", " + passwordLama + " , " + gantiPassword);
+                if(passwordLama.equalsIgnoreCase(password))
+                {
+                    if(gantiPassword != null)
+                    {
+                        databaseInfo.updateAkun(username, newAkun, newMember);
+                    }
+                    else
+                    {
+                        databaseInfo.updateAkun(username, currentAkun, newMember);
+                    }
+                    session.setAttribute("username", newMember.getNama());
+                }
+                response.sendRedirect("home.jsp");
             } catch (Exception ex) {
 
             }
         }
     }
 %>
+
 <!-- 
 Nama
 Username
@@ -86,6 +79,7 @@ Password
  * @param akunFb
  * @param akunTwitter
  * @param pinBbm-->
+
 <br>
 <br>
 <br>
@@ -102,7 +96,7 @@ Password
     <div class="row">
         <div class="col-lg-8">
             <div class="well bs-component">
-                <form class="form-horizontal" action="updateProfile.jsp" method="POST">
+                <form class="form-horizontal" name="formGantiPassword" action="updateAccount.jsp" method="POST" onsubmit="return validateForm()">
                     <fieldset>
                         <div class="bs-component">
                             <div class="form-group">
@@ -123,7 +117,7 @@ Password
                             <div class="form-group">
                                 <label for="password" class="col-lg-2 control-label">Password</label>
                                 <div class="col-lg-10">
-                                    <input name="password" type="password" class="form-control" id="password" placeholder="Masukkan password">
+                                    <input name="password" type="password" class="form-control" id="password" placeholder="Masukkan password" required>
                                 </div>
                             </div>
 
@@ -131,7 +125,7 @@ Password
                                 <div class="col-lg-2">
                                 </div>
                                 <div class="text-muted col-lg-10">
-                                    <input id="chkIsTeamLead" type="checkbox" name="gantiPassword" value="true"> Sekalian ganti password<br>
+                                    <input id="chkIsTeamLead" type="checkbox" name="gantiPassword"> Sekalian ganti password<br>
                                 </div>
                             </div>
 
@@ -173,6 +167,20 @@ $('#chkIsTeamLead').change(function(){
      console.log('unchecked');
    }
 });
+
+function validateForm()
+{
+    console.log("uhuk uhuk");
+  var a=documents.forms["formGantiPassword"]["passwordBaru"].value;
+  var b=documents.forms["formGantiPassword"]["konfirmasiPasswordBaru"].value;
+  console.log(a + "==" + b);
+  if(!(a==b))
+  {
+    alert("both passwords are not matching");
+    return false;
+  }
+  return true;
+}
 </script>
 <jsp:include page="footer.jsp"></jsp:include>
 </body>

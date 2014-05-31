@@ -34,7 +34,6 @@
     out.println(currentKontak);
     currentMember = databaseInfo.getMember(username);
     out.println(currentKontak.getAkunTwitter());
-    out.println(currentMember.getPassword());
 
     if (request.getMethod().equalsIgnoreCase("POST")) {
         if (request.getParameter("submit").equalsIgnoreCase("batal")) {

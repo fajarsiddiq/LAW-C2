@@ -7,6 +7,7 @@ package Controller;
 
 import Konten.AkunBean;
 import Konten.BookmarkBean;
+import Konten.GambarBean;
 import Konten.IklanBean;
 import Konten.KontakBean;
 import Konten.MemberBean;
@@ -19,6 +20,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sun.rmi.runtime.Log;
 
 /**
  *
@@ -133,17 +135,20 @@ public class DatabaseInfo {
      *
      * @param newIklan
      */
-    public void saveIklan(IklanBean newIklan) {
+    public String saveIklan(IklanBean newIklan) {
         openConnection();
-        String query = "insert into iklan (nama, pemasang, kategori, status, jumlah_view, link_foto, harga, jenis_iklan, tanggal, deskripsi) values ("
+        String query = "insert into iklan (nama, pemasang, kategori, status, jumlah_view, link_foto, harga, jenis_iklan, tanggal, deskripsi) values ('"
                 + newIklan.getNama() + "','" + newIklan.getPemasang() + "','" + newIklan.getKategori() + "','" + newIklan.getStatus() + "'," + newIklan.getJumlahView() + ",'"
                 + newIklan.getLinkFoto() + "'," + newIklan.getHarga() + ",'" + newIklan.getJenisIklan() + "','" + newIklan.getTanggal() + "','" + newIklan.getDeskripsi() + "');";
         try {
             stmt.executeUpdate(query);
+            closeConnection();
+            return query;
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         closeConnection();
+        return "salah";
     }
 
     public int getJumlahIklan(String query) {
@@ -519,5 +524,83 @@ public class DatabaseInfo {
             Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         closeConnection();
+    }
+    
+    public GambarBean getGambarBean (String username, int idIklan) {
+        openConnection();
+        String query = "select * from gambar where user_ui = '" + username + "' and id_iklan = " + idIklan + ";";
+        try {
+            String path1 = "";
+            String path2 = "";
+            String path3 = "";
+            String path4 = "";
+            String path5 = "";
+            String path6 = "";
+            String userUI = "";
+            int id_iklan = 0;
+            rs = stmt.executeQuery(query);
+            int i = 1;
+            while (rs.next()) {
+                if (i == 1) {
+                    path1 = rs.getString("path_satu");
+                } else if (i == 2) {
+                    path2 = rs.getString("path_dua");
+                } else if (i == 3) {
+                    path3 = rs.getString("path_tiga");
+                } else if (i == 4) {
+                    path4 = rs.getString("path_empat");
+                } else if (i == 5) {
+                    path5 = rs.getString("path_lima");
+                } else if (i == 6) {
+                    path6 = rs.getString("path_enam");
+                }
+                i++;
+                userUI = rs.getString("user_ui");
+                id_iklan = rs.getInt("id_iklan");
+            }
+            GambarBean gb = new GambarBean(userUI, id_iklan, path1, path2, path3, path4, path5, path6);
+            closeConnection();
+            return gb;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return null;
+    }
+    
+    public void saveGambar(GambarBean gb) {
+        openConnection();
+        String query = "insert into gambar values ('" + gb.getAkun_ui() + "', " + gb.getIdIklan() + ", '" + gb.getPath1() + "', '"
+                + gb.getPath2() + "', '" + gb.getPath3() + "', '" + gb.getPath4() + "', '" + gb.getPath5() + "', '" + gb.getPath6() + "');";
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+    }
+    
+    public int getIdIklan (String namaIklan) {
+        openConnection();
+        String query = "select id from iklan where nama = '" + namaIklan + "';";
+//        if (offNum == 1) {
+//            query = "select * from iklan where nama like '%" + namaIklan + "%' limit 3";
+//        } else if (offNum > 1) {
+//            query = "select * from iklan where nama like '%" + namaIklan + "%' limit 3 offset " + ((offNum - 1) * 3);
+//        }
+        try {
+            rs = stmt.executeQuery(query);
+            int idIklan = 0;
+            while (rs.next()) {
+                idIklan = rs.getInt("id");
+            }
+
+            closeConnection();
+            return idIklan;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return 0;
     }
 }

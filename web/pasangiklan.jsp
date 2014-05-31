@@ -1,3 +1,9 @@
+<%@ page import="java.io.*,java.util.*, javax.servlet.*" %>
+<%@ page import="javax.servlet.http.*" %>
+<%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="org.apache.commons.fileupload.disk.*" %>
+<%@ page import="org.apache.commons.fileupload.servlet.*" %>
+<%@ page import="org.apache.commons.io.output.*" %>
 <!DOCTYPE html>
 
 <jsp:include page="header.jsp"></jsp:include>
@@ -76,6 +82,7 @@
             </ul>
             <%
                 }
+                
             %>
         </div>
     </div>
@@ -96,26 +103,26 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="well bs-component">
-                <form class="form-horizontal" action="detailIklan.jsp" method="POST">
+                <form class="form-horizontal" action="prosesIklan.jsp" method="POST" enctype="multipart/form-data">
                     <fieldset>
                         <div class="bs-component">
                             <div class="form-group">
                                 <label for="inputName" class="col-lg-2 control-label">Nama</label>
                                 <div class="col-lg-10">
-                                    <input type="text" class="form-control" id="inputName" placeholder="Masukkan nama">
+                                    <input type="text" class="form-control" name="namaIklan" id="inputName" placeholder="Masukkan nama">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="select" class="col-lg-2 control-label">Kategori</label>
                                 <div class="col-lg-10">
-                                    <select class="form-control" id="select">
-                                        <option>Buku Kuliah</option>
-                                        <option>Alat Tulis</option>
-                                        <option>Elektronik</option>
-                                        <option>Fashion</option>
-                                        <option>Jasa</option>
-                                        <option>Lainnya</option>
+                                    <select name="kategori" class="form-control" id="select">
+                                        <option value="Buku Kuliah">Buku Kuliah</option>
+                                        <option value="Alat Tulis">Alat Tulis</option>
+                                        <option value="Elektronik">Elektronik</option>
+                                        <option value="Fashion">Fashion</option>
+                                        <option value="Jasa">Jasa</option>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                             </div>
@@ -123,7 +130,7 @@
                             <div class="form-group">
                                 <label for="inputHarga" class="col-lg-2 control-label">Harga</label>
                                 <div class="col-lg-10">
-                                    <input type="text" class="form-control" id="inputName" placeholder="Masukkan harga">
+                                    <input type="text" name="harga" class="form-control" id="inputName" placeholder="Masukkan harga">
                                 </div>
                             </div>
 
@@ -132,13 +139,13 @@
                                 <div class="col-lg-10">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                            <input type="radio" name="jenis" id="optionsRadios1" value="Dijual" checked="">
                                             Dijual
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                            <input type="radio" name="jenis" id="optionsRadios2" value="Dicari">
                                             Dicari
                                         </label>
                                     </div>
@@ -150,13 +157,13 @@
                                 <div class="col-lg-10">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                            <input type="radio" name="status" id="optionsRadios1" value="Baru" checked="">
                                             Baru 
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                            <input type="radio" name="status" id="optionsRadios2" value="Bekas">
                                             Bekas
                                         </label>
                                     </div>
@@ -166,7 +173,7 @@
                             <div class="form-group">
                                 <label for="textArea" class="col-lg-2 control-label">Deskripsi</label>
                                 <div class="col-lg-10">
-                                    <textarea class="form-control" rows="5" id="textArea" placeholder="Masukkan deskripsi iklan<"></textarea>
+                                    <textarea class="form-control" name="deskripsi" rows="5" id="textArea" placeholder="Masukkan deskripsi iklan<"></textarea>
                                 </div>
 
                             </div>
@@ -175,45 +182,30 @@
                                 <div class="row">
                                     <label for="textArea" class="col-lg-2 control-label">Unggah Foto</label>
                                     <div class="col-md-3">
-                                        <img src="images/dropbox.jpg" width="150" height="150" />
+                                        
+                                        <input type="file" name="foto1" size="50" />
+                                        <input type="file" name="foto2" size="50" />
+                                        <input type="file" name="foto3" size="50" />
+                                        <input type="file" name="foto4" size="50" />
+                                        <input type="file" name="foto5" size="50" />
+                                        <input type="file" name="foto6" size="50" />
+                                        <br />
                                         <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <img src="images/dropbox.jpg" width="150" height="150" />
-                                        <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <img src="images/dropbox.jpg" width="150" height="150" />
-                                        <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
+                                        
                                     </div>
                                 </div>
 
-                                <br>
-                                <br>     
-                                <div class="row">
-                                    <div class="col-lg-2"></div>
 
-                                    <div class="col-md-3">
-                                        <img src="images/dropbox.jpg" width="150" height="150" />
-                                        <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <img src="images/dropbox.jpg" width="150" height="150" />
-                                        <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <img src="images/dropbox.jpg" width="150" height="150" />
-                                        <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
-                                    </div>
-                                </div>
                             </div>
 
                             <br>
-                            
+
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-2">
+
                                     <button class="btn btn-default">Batal</button>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
+
                                 </div>
                             </div>
                     </fieldset>

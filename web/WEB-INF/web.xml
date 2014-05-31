@@ -13,6 +13,13 @@
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <description>Location to store uploaded file</description> 
+    <param-name>file-upload</param-name> 
+    <param-value>
+         f:\aaa\uiberdagang\data\
+     </param-value> 
+    </context-param>
     <filter>
         <filter-name>CAS Filter</filter-name>
         <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>

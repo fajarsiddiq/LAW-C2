@@ -81,15 +81,7 @@
 
                     </ul>
                 </div>
-                <div id="carousel" class="flexslider">
-                    <ul class="slides">
-                        <li>
-                            <img src="images/<%= path %>" />
-                        </li>
-                        
-
-                    </ul>
-                </div>
+                
             </section>
         </div>
 

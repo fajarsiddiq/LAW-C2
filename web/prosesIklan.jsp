@@ -31,6 +31,7 @@
     String jenis = "";
     String status = "";
     String deskripsi = "";
+    int index = 0;
     ArrayList<String> path = new ArrayList<String>();
 
     if (request.getMethod().equalsIgnoreCase("post")) {
@@ -66,11 +67,12 @@
                 out.println("<title>UIBerdagang</title>");
                 out.println("</head>");
                 out.println("<body>");
-                
+
                 // tolong periksa setelah while selesai
                 while (i.hasNext()) {
                     FileItem fi = (FileItem) i.next();
                     if (!fi.isFormField()) {
+                        index++;
                         // Get the uploaded file parameters
 
                         String fieldName = fi.getFieldName();
@@ -87,9 +89,65 @@
                         }
                         fi.write(file);
                         //out.println("Uploaded Filename: " + filePath + fileName + "<br>");
+                        //out.println(index);
                         path.add(fileName);
+                        if (index >= 6) {
+                            // cek mulai di sini
+                            DatabaseInfo databaseInfo = new DatabaseInfo();
+                            String pemasang = databaseInfo.getUserByNama(username);
+                            iklanBaru.setNama(namaIklan);
+                            //out.println("Nama iklan = " + namaIklan);
+                            iklanBaru.setHarga(harga);
+                            iklanBaru.setJenisIklan(jenis);
+                            iklanBaru.setPemasang(pemasang);
+                            iklanBaru.setKategori(kategori);
+                            iklanBaru.setStatus(status);
+                            java.util.Date utilDate = new java.util.Date();
+                            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                            iklanBaru.setTanggal(sqlDate);
+                            iklanBaru.setJumlahView(0);
+                            iklanBaru.setLinkFoto("");
+                            iklanBaru.setDeskripsi(deskripsi);
+
+                            String tes = databaseInfo.saveIklan(iklanBaru);
+                            //out.println(tes);
+
+                            gambarBaru.setAkun_ui(pemasang);
+                            int id = databaseInfo.getIdIklan(namaIklan);
+                            gambarBaru.setIdIklan(id);
+                            //out.println(id);
+                            for (int ii = 0; ii < path.size(); ii++) {
+                                if (ii == 0) {
+                                    gambarBaru.setPath1(path.get(0));
+                                }
+                                if (ii == 1) {
+                                    gambarBaru.setPath1(path.get(1));
+                                }
+                                if (ii == 2) {
+                                    gambarBaru.setPath1(path.get(2));
+                                }
+                                if (ii == 3) {
+                                    gambarBaru.setPath1(path.get(3));
+                                }
+                                if (ii == 4) {
+                                    gambarBaru.setPath1(path.get(4));
+                                }
+                                if (ii == 5) {
+                                    gambarBaru.setPath1(path.get(5));
+                                }
+                            }
+                            databaseInfo.saveGambar(gambarBaru);
+                            %>
+                            
+                            <script type="script">window.alert("Iklan sukses dipasang. Anda akan dibawa menuju Halaman Depan.");</script>
+                            
+                            <%
+                            String redirectURL = "home.jsp";
+                            response.sendRedirect(redirectURL);
+                        }
 
                     } else {
+                        index++;
                         if (fi.getFieldName().equalsIgnoreCase("namaIklan")) {
                             namaIklan = fi.getString();
                             //out.println(namaIklan);
@@ -114,56 +172,11 @@
                             deskripsi = fi.getString();
                             //out.println(deskripsi);
                         }
+                        //out.println(index);
                     }
 
                 }
-                // cek mulai di sini
-                DatabaseInfo databaseInfo = new DatabaseInfo();
 
-                iklanBaru.setNama(namaIklan);
-                //out.println("Nama iklan = " + namaIklan);
-                iklanBaru.setHarga(harga);
-                iklanBaru.setJenisIklan(jenis);
-                iklanBaru.setPemasang("muhammad.fajar12");
-                iklanBaru.setKategori(kategori);
-                iklanBaru.setStatus(status);
-                java.util.Date utilDate = new java.util.Date();
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                iklanBaru.setTanggal(sqlDate);
-                iklanBaru.setJumlahView(0);
-                iklanBaru.setLinkFoto("");
-                iklanBaru.setDeskripsi(deskripsi);
-
-                String tes = databaseInfo.saveIklan(iklanBaru);
-                //out.println(tes);
-
-                gambarBaru.setAkun_ui("muhammad.fajar12");
-                int id = databaseInfo.getIdIklan(namaIklan);
-                gambarBaru.setIdIklan(id);
-                out.println(id);
-                for (int ii = 0; ii < path.size(); ii++) {
-                    if (ii == 0) {
-                        gambarBaru.setPath1(path.get(0));
-                    }
-                    if (ii == 1) {
-                        gambarBaru.setPath1(path.get(1));
-                    }
-                    if (ii == 2) {
-                        gambarBaru.setPath1(path.get(2));
-                    }
-                    if (ii == 3) {
-                        gambarBaru.setPath1(path.get(3));
-                    }
-                    if (ii == 4) {
-                        gambarBaru.setPath1(path.get(4));
-                    }
-                    if (ii == 5) {
-                        gambarBaru.setPath1(path.get(5));
-                    }
-                }
-                databaseInfo.saveGambar(gambarBaru);
-                
-                
                 out.println("</body>");
                 out.println("</html>");
             } catch (Exception ex) {

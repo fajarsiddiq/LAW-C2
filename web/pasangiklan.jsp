@@ -184,13 +184,7 @@
                                     <div class="col-md-3">
                                         
                                         <input type="file" name="foto1" size="50" />
-                                        <input type="file" name="foto2" size="50" />
-                                        <input type="file" name="foto3" size="50" />
-                                        <input type="file" name="foto4" size="50" />
-                                        <input type="file" name="foto5" size="50" />
-                                        <input type="file" name="foto6" size="50" />
                                         <br />
-                                        <button type="submit" class="btn btn-default btn-block">Upload Foto</button>
                                         
                                     </div>
                                 </div>

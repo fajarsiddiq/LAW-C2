@@ -247,6 +247,7 @@
         </div>
     </div> <!-- end login -->
 <jsp:include page="footer.jsp"></jsp:include>
+<script src="js/dropdown.js"></script>
 </body>
 
 </html>

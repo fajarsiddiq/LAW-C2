@@ -67,7 +67,7 @@
             <span>Ditampilkan : <%= iklan.getJumlahView()%> kali</span>
         </p>
     </div>
-
+            <% String path = db2.getPathFotoById(id); %>
     <!-- Place somewhere in the <body> of your page -->
     <div class="row">
         <div class="col-lg-8">
@@ -75,34 +75,18 @@
                 <div id="slider" class="flexslider">
                     <ul class="slides">
                         <li>
-                            <img src="images/kitchen_adventurer_cheesecake_brownie.jpg" />
+                            <img src="images/<%= path %>" />
                         </li>
-                        <li>
-                            <img src="images/kitchen_adventurer_lemon.jpg" />
-                        </li>
-                        <li>
-                            <img src="images/kitchen_adventurer_donut.jpg" />
-                        </li>
-                        <li>
-                            <img src="images/kitchen_adventurer_caramel.jpg" />
-                        </li>
+                        
 
                     </ul>
                 </div>
                 <div id="carousel" class="flexslider">
                     <ul class="slides">
                         <li>
-                            <img src="images/kitchen_adventurer_cheesecake_brownie.jpg" />
+                            <img src="images/<%= path %>" />
                         </li>
-                        <li>
-                            <img src="images/kitchen_adventurer_lemon.jpg" />
-                        </li>
-                        <li>
-                            <img src="images/kitchen_adventurer_donut.jpg" />
-                        </li>
-                        <li>
-                            <img src="images/kitchen_adventurer_caramel.jpg" />
-                        </li>
+                        
 
                     </ul>
                 </div>

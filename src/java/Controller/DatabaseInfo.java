@@ -583,11 +583,7 @@ public class DatabaseInfo {
     public int getIdIklan (String namaIklan) {
         openConnection();
         String query = "select id from iklan where nama = '" + namaIklan + "';";
-//        if (offNum == 1) {
-//            query = "select * from iklan where nama like '%" + namaIklan + "%' limit 3";
-//        } else if (offNum > 1) {
-//            query = "select * from iklan where nama like '%" + namaIklan + "%' limit 3 offset " + ((offNum - 1) * 3);
-//        }
+
         try {
             rs = stmt.executeQuery(query);
             int idIklan = 0;
@@ -602,5 +598,45 @@ public class DatabaseInfo {
         }
         closeConnection();
         return 0;
+    }
+    
+    public String getUserByNama (String nama) {
+        openConnection();
+        String query = "select user_ui from member where nama = '" + nama + "';";
+
+        try {
+            rs = stmt.executeQuery(query);
+            String username = "";
+            while (rs.next()) {
+                username = rs.getString("user_ui");
+            }
+
+            closeConnection();
+            return username;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return null;
+    }
+    
+    public String getPathFotoById (int id) {
+        openConnection();
+        String query = "select path_satu from gambar where id_iklan = " + id + ";";
+
+        try {
+            rs = stmt.executeQuery(query);
+            String path = "";
+            while (rs.next()) {
+                path = rs.getString("path_satu");
+            }
+
+            closeConnection();
+            return path;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return null;
     }
 }

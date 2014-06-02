@@ -75,7 +75,7 @@
                 <div id="slider" class="flexslider">
                     <ul class="slides">
                         <li>
-                            <img src="images/<%= path %>" />
+                            <img src="images/<%= path %>" height="600" width="400" />
                         </li>
                         
 
@@ -208,9 +208,24 @@
                     });
                 });
             </script>
+<%
+        com.bayarmudah.BeliBarang_Service service = new com.bayarmudah.BeliBarang_Service();
+	com.bayarmudah.BeliBarang port = service.getBeliBarangPort();
+	 // TODO initialize WS operation arguments here
+	java.lang.String pengirim = username;
+	java.lang.String penerima = member.getUsername();
+	java.lang.String nominal = ""+iklan.getHarga();
+	java.lang.String keterangan = "Membeli " + iklan.getNama();
+	// TODO process result here
+	int result = port.beli(pengirim, penerima, nominal, keterangan);
+	out.println("Result = "+result);
+    
+    %>
+    <%-- end web service invocation --%><hr/>
 
             </body>
             </html>
+
         <% } catch (Exception e) {
                 e.printStackTrace();
             }

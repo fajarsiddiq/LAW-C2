@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://c1law.cloudapp.net:8080/bayarmudahui/beliBarang?wsdl" uri="wsdl/c1law.cloudapp.net_8080/bayarmudahui/beliBarang.wsdl"/>
+    <system systemId="http://c1law.cloudapp.net:8080/bayarmudahui/beliBarang?xsd=1" uri="wsdl/c1law.cloudapp.net_8080/bayarmudahui/beliBarang.xsd_1.xsd"/>
+</catalog>
